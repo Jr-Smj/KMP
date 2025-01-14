@@ -10,10 +10,3 @@ data class Movie(
     val Type: String,
     val Poster: String
 )
-
-@Serializable
-data class MovieResponse(
-    val Search: List<Movie> = emptyList(),
-    val totalResults: String? = null,
-    val Response: String
-)

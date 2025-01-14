@@ -1,34 +1,34 @@
 plugins {
-    alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.androidLibrary)
+    kotlin("multiplatform")
+    kotlin("plugin.serialization") version "1.8.20" // Użyj odpowiedniej wersji, która pasuje do Twojego projektu
+    id("com.android.library")
 }
 
 kotlin {
-    androidTarget {
-        compilations.all {
-            kotlinOptions {
-                jvmTarget = "1.8"
-            }
-        }
-    }
-    
-    listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach {
-        it.binaries.framework {
-            baseName = "shared"
-            isStatic = true
-        }
-    }
+    androidTarget()
+
+
+    iosX64()
+    iosArm64()
+    iosSimulatorArm64()
 
     sourceSets {
-        commonMain.dependencies {
-            //put your multiplatform dependencies here
+        val commonMain by getting {
+            dependencies {
+                // Ktor client dependencies
+                implementation("io.ktor:ktor-client-core:2.2.3")
+                implementation("io.ktor:ktor-client-json:2.2.3")
+                implementation("io.ktor:ktor-client-serialization:2.2.3")
+                implementation("io.ktor:ktor-client-content-negotiation:2.2.3")
+
+                // Kotlinx Serialization
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
+            }
         }
-        commonTest.dependencies {
-            implementation(libs.kotlin.test)
+        val commonTest by getting {
+            dependencies {
+                implementation(kotlin("test"))
+            }
         }
     }
 }
